@@ -52,7 +52,7 @@ public class ReflectionJsonValueSerializer implements JsonValueSerializer {
 
     public JsonArray serializeArray(Iterable<?> value) {
         List<JsonValue> array = new ArrayList<>();
-        for (Object arrayValue : array) {
+        for (Object arrayValue : value) {
             array.add(toJsonValue(arrayValue));
         }
         return new JsonArray(array);

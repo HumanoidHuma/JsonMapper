@@ -49,8 +49,12 @@ public class CompactJsonWriter implements JsonWriter {
 
     public void append(JsonArray json, StringBuilder sb) {
         sb.append("[");
-        for (JsonValue value : json.value()) {
-            append(value, sb);
+        Iterator<JsonValue> it = json.value().iterator();
+        while (it.hasNext()) {
+            append(it.next(), sb);
+            if (it.hasNext()) {
+                sb.append(",");
+            }
         }
         sb.append("]");
     }
@@ -58,10 +62,16 @@ public class CompactJsonWriter implements JsonWriter {
     public void append(JsonObject json, StringBuilder sb) {
         sb.append("{");
         Map<JsonString, JsonValue> members = json.members();
+        int count = 0;
+        int size = members.size();
         for (JsonString key : members.keySet()) {
             append(key, sb);
             sb.append(":");
             append(members.get(key), sb);
+            if (count < size - 1) {
+                sb.append(",");
+            }
+            count++;
         }
         sb.append("}");
     }
