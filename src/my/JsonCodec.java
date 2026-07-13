@@ -1,6 +1,6 @@
 package my;
 
-import my.deserializers.ReflectionJsonValueDeserializer;
+import my.deserializers.RecursiveJsonValueDeserializer;
 import my.mapper.JsonValueMapper;
 import my.mapper.ReflectionJsonValueMapper;
 import my.parsers.JsonParser;
@@ -21,9 +21,9 @@ public class JsonCodec {
     }
 
     public JsonCodec() {
-        mapper = new ReflectionJsonValueMapper(new ReflectionJsonValueSerializer(), new ReflectionJsonValueDeserializer());
-        writer = new CompactJsonWriter();
-        parser = new RecursiveJsonParser();
+        this(new ReflectionJsonValueMapper(new ReflectionJsonValueSerializer(), new RecursiveJsonValueDeserializer()),
+                new CompactJsonWriter(),
+                new RecursiveJsonParser());
     }
 
     public String toJson(Object object) {
