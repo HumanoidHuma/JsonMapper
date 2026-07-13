@@ -2,9 +2,9 @@ package my.deserializers;
 
 import my.entities.JsonValue;
 
-public class RecursiveJsonValueDeserializer implements JsonValueDeserializer {
+public class ReflectionJsonValueDeserializer implements JsonValueDeserializer {
 
-    public RecursiveJsonValueDeserializer() {}
+    public ReflectionJsonValueDeserializer() {}
 
     @Override
     public <T> T fromJsonValue(JsonValue value, Class<T> targetType) {

@@ -104,20 +104,5 @@ public class CompactJsonWriter implements JsonWriter {
             }
         }
         sb.append("}");
-
-//        sb.append("{");
-//        Map<JsonString, JsonValue> members = json.members();
-//        int count = 0;
-//        int size = members.size();
-//        for (JsonString key : members.keySet()) {
-//            append(key, sb);
-//            sb.append(":");
-//            append(members.get(key), sb);
-//            if (count < size - 1) {
-//                sb.append(",");
-//            }
-//            count++;
-//        }
-//        sb.append("}");
     }
 }

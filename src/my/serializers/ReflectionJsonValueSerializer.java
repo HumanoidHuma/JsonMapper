@@ -1,13 +1,15 @@
 package my.serializers;
 
 import my.entities.*;
+import my.exceptions.JsonMappingException;
 
 import java.lang.reflect.Array;
 import java.lang.reflect.Field;
 import java.util.*;
+import java.util.concurrent.ConcurrentHashMap;
 
 public class ReflectionJsonValueSerializer implements JsonValueSerializer {
-    private static final Map<Class<?>, Field[]> fieldCache = new HashMap<>();
+    private final Map<Class<?>, Field[]> fieldCache = new ConcurrentHashMap<>();
 
     @Override
     public JsonValue toJsonValue(Object value) {
@@ -35,11 +37,12 @@ public class ReflectionJsonValueSerializer implements JsonValueSerializer {
         return serializeObject(value);
     }
 
-    public static Field[] findSerializableFields(Class<?> clazz) {
-        if (!fieldCache.containsKey(clazz)) {
-            fieldCache.put(clazz, clazz.getFields());
-        }
-        return fieldCache.get(clazz);
+    private Field[] findSerializableFields(Class<?> clazz) {
+        return fieldCache.computeIfAbsent(clazz, this::inspectSerializableFields);
+    }
+
+    private Field[] inspectSerializableFields(Class<?> clazz) {
+        return clazz.getFields();
     }
 
     public JsonNull serializeNull(Object value) {
@@ -101,8 +104,15 @@ public class ReflectionJsonValueSerializer implements JsonValueSerializer {
             try {
                 jsonValue = toJsonValue(field.get(value));
             } catch (IllegalAccessException e) {
-                System.out.println("Can not serialize \"" + field.getName() + "\" field");
-                jsonValue = serializeNull(value);
+                // System.out.println("Can not serialize \"" + field.getName() + "\" field");
+                throw new JsonMappingException(
+                        "Can not read field '"
+                        + field.getName()
+                        + "' from"
+                        + value.getClass().getName(),
+                        e
+                );
+                // jsonValue = serializeNull(value);
             }
             result.addMember(key, jsonValue);
         }

@@ -1,10 +1,10 @@
 package my;
 
-import my.deserializers.RecursiveJsonValueDeserializer;
+import my.deserializers.ReflectionJsonValueDeserializer;
 import my.mapper.JsonValueMapper;
 import my.mapper.ReflectionJsonValueMapper;
 import my.parsers.JsonParser;
-import my.parsers.RecursiveJsonParser;
+import my.parsers.RecursiveDescentJsonParser;
 import my.serializers.ReflectionJsonValueSerializer;
 import my.writers.CompactJsonWriter;
 import my.writers.JsonWriter;
@@ -21,9 +21,9 @@ public class JsonCodec {
     }
 
     public JsonCodec() {
-        this(new ReflectionJsonValueMapper(new ReflectionJsonValueSerializer(), new RecursiveJsonValueDeserializer()),
+        this(new ReflectionJsonValueMapper(new ReflectionJsonValueSerializer(), new ReflectionJsonValueDeserializer()),
                 new CompactJsonWriter(),
-                new RecursiveJsonParser());
+                new RecursiveDescentJsonParser());
     }
 
     public String toJson(Object object) {
