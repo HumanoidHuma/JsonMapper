@@ -6,11 +6,11 @@ import my.serializers.JsonValueSerializer;
 
 public class ReflectionJsonValueMapper implements JsonValueMapper {
     private final JsonValueSerializer serializer;
-    private final JsonValueDeserializer decoder;
+    private final JsonValueDeserializer deserializer;
 
-    public ReflectionJsonValueMapper(JsonValueSerializer serializer, JsonValueDeserializer decoder) {
+    public ReflectionJsonValueMapper(JsonValueSerializer serializer, JsonValueDeserializer deserializer) {
         this.serializer = serializer;
-        this.decoder = decoder;
+        this.deserializer = deserializer;
     }
 
     @Override
@@ -20,6 +20,6 @@ public class ReflectionJsonValueMapper implements JsonValueMapper {
 
     @Override
     public <T> T fromJsonValue(JsonValue value, Class<T> targetType) {
-        return decoder.fromJsonValue(value, targetType);
+        return deserializer.fromJsonValue(value, targetType);
     }
 }
